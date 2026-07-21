@@ -27,7 +27,7 @@ public:
 #define STUBBED()                                                                                                            \
 	do {                                                                                                                     \
 		std::string str = "Hit stubbed file at " __FILE__ ":" + std::to_string(__LINE__) + " func " + std::string(__func__); \
-		OOVR_ABORT(str.c_str());                                                                                             \
+		OOVR_LOG(str.c_str());                                                                                               \
 	} while (0)
 
 #endif

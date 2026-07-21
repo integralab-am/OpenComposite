@@ -28,7 +28,11 @@ set(GENERATED_DIR ${CMAKE_BINARY_DIR}/generated)
 # Platform-dependent flags
 # Support Vulkan on Linux instead of DirectX
 if (WIN32)
-	set(GRAPHICS_API_SUPPORT_FLAGS -DSUPPORT_DX -DSUPPORT_DX11 -DSUPPORT_DX12 -DSUPPORT_VK -DSUPPORT_GL)
+	if (SUPPORT_VK)
+		set(GRAPHICS_API_SUPPORT_FLAGS -DSUPPORT_DX -DSUPPORT_DX11 -DSUPPORT_DX12 -DSUPPORT_VK -DSUPPORT_GL)
+	else()
+		set(GRAPHICS_API_SUPPORT_FLAGS -DSUPPORT_DX -DSUPPORT_DX11 -DSUPPORT_DX12 -DSUPPORT_GL)
+	endif()
 elseif (ANDROID)
 	set(GRAPHICS_API_SUPPORT_FLAGS -DSUPPORT_VK -DSUPPORT_GLES)
 else ()
@@ -89,10 +93,12 @@ add_library(Vulkan INTERFACE)
 if (WIN32)
 	# On Windows, use the bundled copy
 	target_include_directories(Vulkan INTERFACE libs/vulkan/Include) # TODO make this private and put the public headers elsewhere
-	if ("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-		target_link_libraries(Vulkan INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/libs/vulkan/Lib/vulkan-1.lib)
-	else ()
-		target_link_libraries(Vulkan INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/libs/vulkan/Lib32/vulkan-1.lib)
+	if (SUPPORT_VK)
+		if ("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+			target_link_libraries(Vulkan INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/libs/vulkan/Lib/vulkan-1.lib)
+		else ()
+			target_link_libraries(Vulkan INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/libs/vulkan/Lib32/vulkan-1.lib)
+		endif ()
 	endif ()
 
 	target_compile_definitions(Vulkan INTERFACE -DVK_USE_PLATFORM_WIN32_KHR)
@@ -115,7 +121,10 @@ else ()
 endif ()
 
 # === OpenXR ===
-add_compile_definitions(XR_USE_GRAPHICS_API_OPENGL XR_USE_GRAPHICS_API_VULKAN)
+add_compile_definitions(XR_USE_GRAPHICS_API_OPENGL)
+if (SUPPORT_VK)
+	add_compile_definitions(XR_USE_GRAPHICS_API_VULKAN)
+endif()
 # Platform-dependent flags
 if (WIN32)
 	add_compile_definitions(XR_OS_WINDOWS XR_USE_PLATFORM_WIN32

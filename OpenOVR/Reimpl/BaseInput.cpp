@@ -4,6 +4,7 @@
 #include "json/json.h"
 #define BASE_IMPL
 #include "BaseInput.h"
+#include "../BodyWalkInput.h"
 #include <string>
 
 #include <convert.h>
@@ -1748,6 +1749,23 @@ EVRInputError BaseInput::GetAnalogActionData(VRActionHandle_t action, InputAnalo
 			pActionData->y = normalizedState.y;
 			pActionData->z = 0;
 			pActionData->bActive = state.isActive;
+
+			if (SharedOpenXRInputState* bwState = GetBodyWalkInputState()) {
+				std::string pathName = allSubactionPathNames[i];
+				if (pathName.find("left") != std::string::npos || pathName.find("Left") != std::string::npos) {
+					if (bwState->overrideStickL) {
+						pActionData->x = bwState->thumbstickLX;
+						pActionData->y = bwState->thumbstickLY;
+						pActionData->bActive = true;
+					}
+				} else if (pathName.find("right") != std::string::npos || pathName.find("Right") != std::string::npos) {
+					if (bwState->overrideStickR) {
+						pActionData->x = bwState->thumbstickRX;
+						pActionData->y = bwState->thumbstickRY;
+						pActionData->bActive = true;
+					}
+				}
+			}
 			pActionData->activeOrigin = activeOriginFromSubaction(act, allSubactionPathNames[i].c_str());
 
 			if (syncSerial > act->previousSerial) {
