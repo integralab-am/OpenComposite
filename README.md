@@ -3,7 +3,7 @@
 > [!NOTE]
 > This repository is a custom **BodyWalkVR Fork** of [OpenComposite / OpenOVR](https://gitlab.com/znixian/OpenOVR) by ZNix / OpenXR-OpenVR.
 > 
-> 📥 **Download Ready-to-Use Archive:** [OpenComposite_BodyWalkVR.zip](https://github.com/integralab-am/OpenComposite/raw/openxr/binaries/OpenComposite_BodyWalkVR.zip)
+> 📥 **Download Pre-compiled Build (Ready to Use):** [OpenComposite_BodyWalkVR.zip](https://github.com/integralab-am/OpenComposite/raw/openxr/binaries/OpenComposite_BodyWalkVR.zip)
 > 
 > **Key Modifications in this Fork:**
 > - **Native BodyWalkVR Locomotion Injection**: Player movement vectors (step speed, direction) are natively injected from BodyWalkVR's shared memory (`Local\BodyWalk_OpenXR_Input`) into OpenComposite's input handling loop.
