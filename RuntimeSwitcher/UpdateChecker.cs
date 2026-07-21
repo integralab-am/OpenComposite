@@ -22,17 +22,22 @@ namespace RuntimeSwitcher
             if (id != null)
                 return id;
 
-            using (WebClient wc = new WebClient())
-            {
-                string json = await wc.DownloadStringTaskAsync("https://gitlab.com/api/v4/projects/znixian%2fOpenOVR/repository/commits/openxr?per_page=1");
+            try {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers.Add("User-Agent", "OpenComposite-RuntimeSwitcher");
+                    string json = await wc.DownloadStringTaskAsync("https://gitlab.com/api/v4/projects/znixian%2fOpenOVR/repository/commits/openxr?per_page=1");
 
-                // Using branch specific URL above misses out the [] on the json string. Check if they need to be added back in.
-                if (json.Substring(0, 1) != "[")
-                    json = "[" + json + "]";
-                
-                Commit commit = JsonConvert.DeserializeObject<List<Commit>>(json).First();
+                    if (json.Substring(0, 1) != "[")
+                        json = "[" + json + "]";
+                    
+                    Commit commit = JsonConvert.DeserializeObject<List<Commit>>(json).First();
 
-                return id = commit.id;
+                    return id = commit.id;
+                }
+            } catch {
+                return null;
             }
         }
     }

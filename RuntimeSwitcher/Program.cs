@@ -14,6 +14,9 @@ namespace RuntimeSwitcher
         [STAThread]
         static void Main()
         {
+            try {
+                System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
+            } catch {}
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWindow());
