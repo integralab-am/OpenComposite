@@ -7,7 +7,7 @@ bin_dir = r'c:\wsl\OpenComposite\build\bin'
 
 os.makedirs(bin_dir, exist_ok=True)
 
-# 1. Copy DLL dependencies
+# 1. Copy DLL dependencies and runtime binaries
 json_dll_src = r'C:\Users\SERG.DESKTOP-3DD7RP1\.nuget\packages\newtonsoft.json\11.0.2\lib\net45\Newtonsoft.Json.dll'
 icon_dll_src = r'C:\Users\SERG.DESKTOP-3DD7RP1\.nuget\packages\osicon\3.0.0\lib\OSIcon.dll'
 
@@ -16,6 +16,18 @@ icon_dll = os.path.join(bin_dir, 'OSIcon.dll')
 
 shutil.copyfile(json_dll_src, json_dll)
 shutil.copyfile(icon_dll_src, icon_dll)
+
+runtime_bin = os.path.join(bin_dir, 'Runtime', 'bin')
+os.makedirs(runtime_bin, exist_ok=True)
+
+# Copy compiled vrclient_x64.dll to Runtime\bin
+compiled_vrclient = os.path.join(bin_dir, 'vrclient_x64.dll')
+if os.path.exists(compiled_vrclient):
+    shutil.copyfile(compiled_vrclient, os.path.join(runtime_bin, 'vrclient_x64.dll'))
+    shutil.copyfile(json_dll_src, os.path.join(runtime_bin, 'Newtonsoft.Json.dll'))
+    shutil.copyfile(icon_dll_src, os.path.join(runtime_bin, 'OSIcon.dll'))
+    with open(os.path.join(bin_dir, 'Runtime', 'revision.txt'), 'w') as f:
+        f.write('bodywalkvr_patched_revision\n')
 
 # 2. Convert .resx to .resources using PowerShell
 ps1_path = os.path.join(work_dir, 'convert_res.ps1')
