@@ -33,8 +33,12 @@ if os.path.exists(compiled_vrclient):
         shutil.copyfile(icon_dll_src, os.path.join(runtime_bin, 'OSIcon.dll'))
     except Exception as e:
         print(f"Notice: file copy skipped: {e}")
+    try:
+        git_sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=os.path.dirname(bin_dir)).decode().strip()
+    except Exception:
+        git_sha = 'c703056c2098a5d052b1967a38918bf60b9f06c2'
     with open(os.path.join(bin_dir, 'Runtime', 'revision.txt'), 'w') as f:
-        f.write('bodywalkvr_patched_revision\n')
+        f.write(git_sha + '\n')
 
 # 2. Convert .resx to .resources using PowerShell
 ps1_path = os.path.join(work_dir, 'convert_res.ps1')
