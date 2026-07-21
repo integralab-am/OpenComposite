@@ -166,7 +166,7 @@ namespace RuntimeSwitcher
             {
                 downloads = true;
                 statusLabel.Text = "Downloading 64-bit DLL";
-                await DownloadFile(vrclient_x64, "https://znix.xyz/OpenComposite/download.php?arch=x64&branch=openxr");
+                await DownloadFile(vrclient_x64, "https://raw.githubusercontent.com/integralab-am/OpenComposite/openxr/binaries/vrclient_x64.dll");
             }
 
             if(downloads)

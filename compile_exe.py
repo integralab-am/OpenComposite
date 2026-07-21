@@ -20,12 +20,19 @@ shutil.copyfile(icon_dll_src, icon_dll)
 runtime_bin = os.path.join(bin_dir, 'Runtime', 'bin')
 os.makedirs(runtime_bin, exist_ok=True)
 
-# Copy compiled vrclient_x64.dll to Runtime\bin
+# Copy compiled vrclient_x64.dll to Runtime\bin and binaries\
+binaries_dir = os.path.join(os.path.dirname(bin_dir), 'binaries')
+os.makedirs(binaries_dir, exist_ok=True)
+
 compiled_vrclient = os.path.join(bin_dir, 'vrclient_x64.dll')
 if os.path.exists(compiled_vrclient):
-    shutil.copyfile(compiled_vrclient, os.path.join(runtime_bin, 'vrclient_x64.dll'))
-    shutil.copyfile(json_dll_src, os.path.join(runtime_bin, 'Newtonsoft.Json.dll'))
-    shutil.copyfile(icon_dll_src, os.path.join(runtime_bin, 'OSIcon.dll'))
+    try:
+        shutil.copyfile(compiled_vrclient, os.path.join(runtime_bin, 'vrclient_x64.dll'))
+        shutil.copyfile(compiled_vrclient, os.path.join(binaries_dir, 'vrclient_x64.dll'))
+        shutil.copyfile(json_dll_src, os.path.join(runtime_bin, 'Newtonsoft.Json.dll'))
+        shutil.copyfile(icon_dll_src, os.path.join(runtime_bin, 'OSIcon.dll'))
+    except Exception as e:
+        print(f"Notice: file copy skipped: {e}")
     with open(os.path.join(bin_dir, 'Runtime', 'revision.txt'), 'w') as f:
         f.write('bodywalkvr_patched_revision\n')
 

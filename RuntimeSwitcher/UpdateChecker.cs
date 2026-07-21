@@ -10,17 +10,31 @@ namespace RuntimeSwitcher
 {
     class UpdateChecker
     {
-        class Commit
+        class GitHubCommitInfo
         {
-            public string id;
+            public string sha;
         }
 
-        private static string id;
+        private static string sha;
 
         public static async Task<string> GetLatestHash()
         {
-            await Task.Delay(1);
-            return null;
+            if (sha != null)
+                return sha;
+
+            try {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers.Add("User-Agent", "OpenComposite-RuntimeSwitcher");
+                    string json = await wc.DownloadStringTaskAsync("https://api.github.com/repos/integralab-am/OpenComposite/commits/openxr");
+                    
+                    GitHubCommitInfo commit = JsonConvert.DeserializeObject<GitHubCommitInfo>(json);
+                    return sha = commit.sha;
+                }
+            } catch {
+                return null;
+            }
         }
     }
 }
