@@ -1,3 +1,17 @@
+# 🚶 BodyWalkVR OpenComposite Fork
+
+> [!NOTE]
+> This repository is a custom **BodyWalkVR Fork** of [OpenComposite / OpenOVR](https://gitlab.com/znixian/OpenOVR) by ZNix / OpenXR-OpenVR.
+> 
+> **Key Modifications in this Fork:**
+> - **Native BodyWalkVR Locomotion Injection**: Player movement vectors (step speed, direction) are natively injected from BodyWalkVR's shared memory (`Local\BodyWalk_OpenXR_Input`) into OpenComposite's input handling loop.
+> - **Crash-Free Stub Error Handling**: Unimplemented OpenVR overlay functions (like `SetOverlayCurvature`) safely log warnings instead of triggering fatal modal dialogs or crashing games.
+> - **Built-in MSVC Build Pipeline**: Added `build_opencomposite.bat` for 1-click MSVC / CMake compilation of `vrclient_x64.dll` and `OpenComposite.exe`.
+> 
+> **Original Upstream Repository:** [https://gitlab.com/znixian/OpenOVR](https://gitlab.com/znixian/OpenOVR) (GitHub Mirror: [OpenXR-OpenVR/OpenComposite](https://github.com/OpenXR-OpenVR/OpenComposite))
+
+---
+
 # OpenComposite (OpenXR) - Play SteamVR games without SteamVR!
 [![Discord](https://img.shields.io/discord/499733750209314816.svg?style=for-the-badge&logo=discord&label=discord)](https://discord.gg/zYA6Tzs)
 [![AppVeyor](https://img.shields.io/appveyor/ci/ZNix/openovr.svg?style=for-the-badge&logo=appveyor)](https://ci.appveyor.com/project/ZNix/openovr)
