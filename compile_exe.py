@@ -21,7 +21,7 @@ runtime_bin = os.path.join(bin_dir, 'Runtime', 'bin')
 os.makedirs(runtime_bin, exist_ok=True)
 
 # Copy compiled vrclient_x64.dll to Runtime\bin and binaries\
-binaries_dir = os.path.join(os.path.dirname(bin_dir), 'binaries')
+binaries_dir = os.path.join(os.path.dirname(os.path.dirname(bin_dir)), 'binaries')
 os.makedirs(binaries_dir, exist_ok=True)
 
 compiled_vrclient = os.path.join(bin_dir, 'vrclient_x64.dll')
